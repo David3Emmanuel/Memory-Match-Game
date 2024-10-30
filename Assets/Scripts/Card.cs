@@ -9,6 +9,8 @@ public class Card : MonoBehaviour
     private Animator animator;
     private bool isShowing;
 
+    public CardType Type => type;
+
     public bool IsShowing
     {
         get => isShowing;
