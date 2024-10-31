@@ -8,7 +8,6 @@ public class LevelManager : MonoBehaviour
     const int MATCH_COUNT = 2;
 
     [SerializeField] private GameObject[] cardPrefabs;
-    [SerializeField] private Level testLevel;
 
     public static LevelManager Instance { get; private set; }
     
@@ -18,12 +17,6 @@ public class LevelManager : MonoBehaviour
     {
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
-    }
-
-    void Start()
-    {
-        if (testLevel != null)
-            SpawnLevel(testLevel);
     }
 
     public void SpawnLevel(Level level)
@@ -122,16 +115,34 @@ public class LevelManager : MonoBehaviour
 
     private IEnumerator HideCards()
     {
-        yield return new WaitForSeconds(1.0f);
+        yield return new WaitForSeconds(0.1f);
 
         if (AreCardsMatching())
+        {
             foreach (var openCard in openCards)
-                openCard.DestroyCard();
+                openCard.HasMatched = true;
+            
+            if (AllCardsMatched())
+                GameManager.Instance.OnLevelComplete();
+        }
         else
+        {
             foreach (var openCard in openCards)
                 openCard.IsShowing = false;
+        }
 
         openCards.Clear();
+    }
+
+    private bool AllCardsMatched()
+    {
+        foreach (Transform child in transform)
+        {
+            Card card = child.GetComponent<Card>();
+            if (card != null && !card.HasMatched)
+                return false;
+        }
+        return true;
     }
 
     private bool AreCardsMatching()
