@@ -8,6 +8,8 @@ public class GameManager : MonoBehaviour
 
     public static GameManager Instance { get; private set; }
 
+    public bool GameOver { get; private set; }
+
     public Level CurrentLevel
     {
         get
@@ -31,16 +33,22 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         LevelManager.Instance.SpawnLevel(CurrentLevel);
+        Timer.Instance.StartTimer(CurrentLevel.timeLimit, OnLevelComplete);
     }
 
     public void OnLevelComplete()
     {
+        Timer.Instance.StopTimer();
+        GameOver = true;
+
         int currentLevelIndex = PlayerPrefs.GetInt("CurrentLevelIndex", 0);
         currentLevelIndex++;
         if (currentLevelIndex < levels.Length)
         {
             PlayerPrefs.SetInt("CurrentLevelIndex", currentLevelIndex);
             LevelManager.Instance.SpawnLevel(levels[currentLevelIndex]);
+            Timer.Instance.StartTimer(CurrentLevel.timeLimit, OnLevelComplete);
+            GameOver = false;
         }
         else
         {

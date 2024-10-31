@@ -103,14 +103,14 @@ public class LevelManager : MonoBehaviour
 
     public void Select(Card card)
     {
-        if (openCards.Count < MATCH_COUNT)
-        {
-            openCards.Add(card);
-            card.IsShowing = true;
+        if (GameManager.Instance.GameOver || openCards.Count >= MATCH_COUNT)
+            return;
 
-            if (openCards.Count == MATCH_COUNT)
-                StartCoroutine(HideCards());
-        }
+        openCards.Add(card);
+        card.IsShowing = true;
+
+        if (openCards.Count == MATCH_COUNT)
+            StartCoroutine(HideCards());
     }
 
     private IEnumerator HideCards()
