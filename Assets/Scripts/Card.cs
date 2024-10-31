@@ -5,12 +5,8 @@ using UnityEngine;
 public class Card : MonoBehaviour
 {
     [SerializeField] private CardType type;
-
-    private Animator animator;
-    private bool isShowing;
-
+    
     public CardType Type => type;
-
     public bool IsShowing
     {
         get => isShowing;
@@ -19,6 +15,18 @@ public class Card : MonoBehaviour
             isShowing = value;
         }
     }
+    public bool HasMatched
+    {
+        get => hasMatched;
+        set {
+            if (value)
+                animator.SetTrigger("Match");
+            hasMatched = value;
+        }
+    }
+    
+    private Animator animator;
+    private bool isShowing, hasMatched;
 
     void Awake()
     {
@@ -27,12 +35,9 @@ public class Card : MonoBehaviour
 
     void OnMouseDown()
     {
+        if (IsShowing || HasMatched) return;
+        
         LevelManager.Instance.Select(this);
-    }
-
-    public void DestroyCard()
-    {
-        Destroy(gameObject);
     }
 }
 
