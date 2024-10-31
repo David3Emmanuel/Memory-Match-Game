@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 public class LevelManager : MonoBehaviour
 {
@@ -29,19 +30,49 @@ public class LevelManager : MonoBehaviour
     {
         ClearLevel();
         List<GameObject> filteredCardPrefabs = FilterCardPrefabs(level.cardTypes);
+        int count = CountCardsToSpawn(level);
+
+        List<GameObject> cardsToSpawn = GenerateCardsToSpawn(count, MATCH_COUNT, filteredCardPrefabs);
 
         float offsetX = (level.Columns - 1) / 2f;
         float offsetY = (level.Rows - 1) / 2f;
 
+        int cardIndex = 0;
         for (int i = 0; i < level.Rows; i++)
             for (int j = 0; j < level.Columns; j++)
                 if (!level.layout[i, j])
                 {
-                    int index = Random.Range(0, filteredCardPrefabs.Count);
-                    GameObject cardPrefab = filteredCardPrefabs[index];
-                    GameObject cardInstance = Instantiate(cardPrefab, transform);
+                    GameObject cardInstance = Instantiate(cardsToSpawn[cardIndex], transform);
                     cardInstance.transform.localPosition = new Vector2(j - offsetX, -i + offsetY);
+                    cardIndex++;
                 }
+    }
+
+    List<GameObject> GenerateCardsToSpawn(int count, int matchCount, List<GameObject> filteredCardPrefabs)
+    {
+        Assert.IsTrue(count % MATCH_COUNT == 0, "The number of cards to spawn must be a multiple of MATCH_COUNT.");
+
+        List<GameObject> cardsToSpawn = new List<GameObject>();
+        for (int i = 0; i < count / matchCount; i++)
+        {
+            int index = Random.Range(0, filteredCardPrefabs.Count);
+            GameObject cardPrefab = filteredCardPrefabs[index];
+            for (int j = 0; j < matchCount; j++)
+            {
+                cardsToSpawn.Add(cardPrefab);
+            }
+        }
+
+        // Shuffle the list
+        for (int i = 0; i < cardsToSpawn.Count; i++)
+        {
+            int rnd = Random.Range(0, cardsToSpawn.Count);
+            GameObject temp = cardsToSpawn[rnd];
+            cardsToSpawn[rnd] = cardsToSpawn[i];
+            cardsToSpawn[i] = temp;
+        }
+
+        return cardsToSpawn;
     }
 
     void ClearLevel()
@@ -65,6 +96,16 @@ public class LevelManager : MonoBehaviour
         }
 
         return filteredCardPrefabs;
+    }
+
+    int CountCardsToSpawn(Level level)
+    {
+        int count = 0;
+        for (int i = 0; i < level.Rows; i++)
+            for (int j = 0; j < level.Columns; j++)
+                if (!level.layout[i, j])
+                    count++;
+        return count;
     }
 
     public void Select(Card card)
