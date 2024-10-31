@@ -43,16 +43,12 @@ public class GameManager : MonoBehaviour
 
         int currentLevelIndex = PlayerPrefs.GetInt("CurrentLevelIndex", 0);
         currentLevelIndex++;
-        if (currentLevelIndex < levels.Length)
-        {
-            PlayerPrefs.SetInt("CurrentLevelIndex", currentLevelIndex);
-            LevelManager.Instance.SpawnLevel(levels[currentLevelIndex]);
-            Timer.Instance.StartTimer(CurrentLevel.timeLimit, OnLevelComplete);
-            GameOver = false;
-        }
-        else
-        {
-            Debug.Log("All levels completed!");
-        }
+        if (currentLevelIndex >= levels.Length)
+            currentLevelIndex = 0;
+
+        PlayerPrefs.SetInt("CurrentLevelIndex", currentLevelIndex);
+        LevelManager.Instance.SpawnLevel(levels[currentLevelIndex]);
+        Timer.Instance.StartTimer(CurrentLevel.timeLimit, OnLevelComplete);
+        GameOver = false;
     }
 }
