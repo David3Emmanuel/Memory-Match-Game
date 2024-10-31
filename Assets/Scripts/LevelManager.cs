@@ -4,10 +4,14 @@ using UnityEngine;
 
 public class LevelManager : MonoBehaviour
 {
-    public GameObject[] cardPrefabs;
-    public Level testLevel;
+    const int MATCH_COUNT = 2;
+
+    [SerializeField] private GameObject[] cardPrefabs;
+    [SerializeField] private Level testLevel;
 
     public static LevelManager Instance { get; private set; }
+    
+    private List<Card> openCards = new List<Card>();
 
     void Awake()
     {
@@ -61,5 +65,44 @@ public class LevelManager : MonoBehaviour
         }
 
         return filteredCardPrefabs;
+    }
+
+    public void Select(Card card)
+    {
+        if (openCards.Count < MATCH_COUNT)
+        {
+            openCards.Add(card);
+            card.IsShowing = true;
+
+            if (openCards.Count == MATCH_COUNT)
+                StartCoroutine(HideCards());
+        }
+    }
+
+    private IEnumerator HideCards()
+    {
+        yield return new WaitForSeconds(1.0f);
+
+        if (AreCardsMatching())
+            foreach (var openCard in openCards)
+                openCard.DestroyCard();
+        else
+            foreach (var openCard in openCards)
+                openCard.IsShowing = false;
+
+        openCards.Clear();
+    }
+
+    private bool AreCardsMatching()
+    {
+        if (openCards.Count < MATCH_COUNT)
+            return false;
+
+        CardType firstType = openCards[0].Type;
+        foreach (var card in openCards)
+            if (card.Type != firstType)
+                return false;
+        
+        return true;
     }
 }

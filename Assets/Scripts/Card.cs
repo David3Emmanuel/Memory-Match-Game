@@ -27,14 +27,12 @@ public class Card : MonoBehaviour
 
     void OnMouseDown()
     {
-        IsShowing = true;
-        StartCoroutine(FlipBack());
+        LevelManager.Instance.Select(this);
     }
 
-    IEnumerator FlipBack()
+    public void DestroyCard()
     {
-        yield return new WaitForSeconds(1.0f);
-        IsShowing = false;
+        Destroy(gameObject);
     }
 }
 
