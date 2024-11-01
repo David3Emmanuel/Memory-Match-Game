@@ -20,6 +20,8 @@ public class MainMenu : MonoBehaviour
         Instance = this;
         targetPosition = transform.localPosition;
 
+        AudioManager.Instance.PlayMainMenuMusic();
+
         int currentLevelIndex = PlayerPrefs.GetInt("CurrentLevelIndex", 0);
 
         for (int i = 0; i < levels.Length; i++)

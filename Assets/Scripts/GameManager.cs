@@ -32,8 +32,18 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        StartCoroutine(StartLevel());
+    }
+
+    private IEnumerator StartLevel()
+    {
+        yield return new WaitForSeconds(1f);
+
+        GameOver = false;
+
         LevelManager.Instance.SpawnLevel(CurrentLevel);
         Timer.Instance.StartTimer(CurrentLevel.timeLimit, OnLevelComplete);
+        AudioManager.Instance.PlayRandomLevelMusic();
     }
 
     public void OnLevelComplete()
@@ -41,14 +51,20 @@ public class GameManager : MonoBehaviour
         Timer.Instance.StopTimer();
         GameOver = true;
 
+        AudioManager.Instance.StopAllSounds();
+
+        if (LevelManager.Instance.AllCardsMatched())
+            AudioManager.Instance.PlaySFX(AudioManager.Instance.winSFX);
+        else
+            AudioManager.Instance.PlaySFX(AudioManager.Instance.loseSFX);
+
         int currentLevelIndex = PlayerPrefs.GetInt("CurrentLevelIndex", 0);
         currentLevelIndex++;
         if (currentLevelIndex >= levels.Length)
             currentLevelIndex = 0;
 
         PlayerPrefs.SetInt("CurrentLevelIndex", currentLevelIndex);
-        LevelManager.Instance.SpawnLevel(levels.GetLevel(currentLevelIndex));
-        Timer.Instance.StartTimer(CurrentLevel.timeLimit, OnLevelComplete);
-        GameOver = false;
+        
+        StartCoroutine(StartLevel());
     }
 }

@@ -134,7 +134,7 @@ public class LevelManager : MonoBehaviour
         openCards.Clear();
     }
 
-    private bool AllCardsMatched()
+    public bool AllCardsMatched()
     {
         foreach (Transform child in transform)
         {
