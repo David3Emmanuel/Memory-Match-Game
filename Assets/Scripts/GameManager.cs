@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] private Level[] levels;
+    [SerializeField] private Levels levels;
 
     public static GameManager Instance { get; private set; }
 
@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour
             if (currentLevelIndex >= levels.Length)
                 currentLevelIndex = levels.Length - 1;
 
-            return levels[currentLevelIndex];
+            return levels.GetLevel(currentLevelIndex);
         }
     }
 
@@ -47,7 +47,7 @@ public class GameManager : MonoBehaviour
             currentLevelIndex = 0;
 
         PlayerPrefs.SetInt("CurrentLevelIndex", currentLevelIndex);
-        LevelManager.Instance.SpawnLevel(levels[currentLevelIndex]);
+        LevelManager.Instance.SpawnLevel(levels.GetLevel(currentLevelIndex));
         Timer.Instance.StartTimer(CurrentLevel.timeLimit, OnLevelComplete);
         GameOver = false;
     }
