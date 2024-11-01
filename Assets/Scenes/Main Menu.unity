@@ -450,11 +450,11 @@ RectTransform:
   - {fileID: 328673874}
   m_Father: {fileID: 1739071448}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: 0, y: 50}
   m_SizeDelta: {x: 500, y: 169.4}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &959068217
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -579,6 +579,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levels: {fileID: 11400000, guid: 460e25bca8c7f3647b4c32c02004833b, type: 2}
+  levelIconPrefab: {fileID: 2920144889566999982, guid: e2e5fa5167f426e4d94e930c836c1e87, type: 3}
+  verticalSpacing: 1.5
 --- !u!4 &1458544405
 Transform:
   m_ObjectHideFlags: 0
