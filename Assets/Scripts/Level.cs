@@ -13,9 +13,7 @@ public class Level : ScriptableObject, ISerializationCallbackReceiver
     public CardType[] cardTypes;
 
     // Grid
-    [SerializeField]
     private int rows = 4;
-    [SerializeField]
     private int columns = 4;
     public bool[,] layout;
     public SerializableLayout serializedLayout;
@@ -49,15 +47,36 @@ public class Level : ScriptableObject, ISerializationCallbackReceiver
         }
     }
 
-    private void InitializeLayout() => layout = new bool[rows, columns];
+    private void InitializeLayout() {
+        if (layout == null)
+        {
+            layout = new bool[rows, columns];
+            return;
+        }
+        
+        int currentRows = layout.GetLength(0);
+        int currentColumns = layout.GetLength(1);
+
+        if (rows == currentRows && columns == currentColumns)
+            return;
+
+        bool[,] newLayout = new bool[rows, columns];
+        for (int i = 0; i < rows; i++)
+        {
+            if (i >= currentRows) continue;
+            for (int j = 0; j < columns; j++)
+            {
+                if (j >= currentColumns) continue;
+                else newLayout[i, j] = layout[i, j];
+            }
+        }
+
+        layout = newLayout;
+    }
 
     public void OnBeforeSerialize()
     {
-        if (layout == null)
-        {
-            InitializeLayout();
-            return;
-        }
+        InitializeLayout();
 
         serializedLayout = new SerializableLayout
         {
@@ -83,7 +102,11 @@ public class Level : ScriptableObject, ISerializationCallbackReceiver
 
         for (int i = 0; i < rows; i++)
             for (int j = 0; j < columns; j++)
+            {
+                SerializableLayoutRow row = serializedLayout.rows[i];
+                bool value = row.row[j];
                 layout[i, j] = serializedLayout.rows[i].row[j];
+            }
     }
 }
 

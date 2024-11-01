@@ -13,6 +13,10 @@ public class LevelEditor : Editor
         // Custom layout grid editor
         EditorGUILayout.Space();
         EditorGUILayout.LabelField("Grid Layout", EditorStyles.boldLabel);
+
+        level.Rows = EditorGUILayout.IntField("Rows", level.Rows);
+        level.Columns = EditorGUILayout.IntField("Columns", level.Columns);
+
         for (int i = 0; i < level.Rows; i++)
         {
             EditorGUILayout.BeginHorizontal();
