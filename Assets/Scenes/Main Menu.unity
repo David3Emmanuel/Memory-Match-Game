@@ -581,6 +581,8 @@ MonoBehaviour:
   levels: {fileID: 11400000, guid: 460e25bca8c7f3647b4c32c02004833b, type: 2}
   levelIconPrefab: {fileID: 2920144889566999982, guid: e2e5fa5167f426e4d94e930c836c1e87, type: 3}
   verticalSpacing: 1.5
+  horizontalOffset: 1
+  moveSpeed: 5
 --- !u!4 &1458544405
 Transform:
   m_ObjectHideFlags: 0

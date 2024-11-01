@@ -40,15 +40,3 @@ public class Card : MonoBehaviour
         LevelManager.Instance.Select(this);
     }
 }
-
-public enum CardType
-{
-    NONE,
-    Red,
-    Orange,
-    Yellow,
-    Green,
-    Blue,
-    Purple,
-    Crotchet,
-}

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39fe7e07f6df91840b4ece14107bf6d6, type: 3}
   m_Name: Level 1
   m_EditorClassIdentifier: 
-  levelName: 
+  levelName: Level 1
   difficulty: 0
   timeLimit: 60
   cardTypes: 
