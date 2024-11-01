@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -66,5 +67,11 @@ public class GameManager : MonoBehaviour
         PlayerPrefs.SetInt("CurrentLevelIndex", currentLevelIndex);
         
         StartCoroutine(StartLevel());
+    }
+
+    public void BackToMainMenu()
+    {
+        AudioManager.Instance.StopAllSounds();
+        SceneManager.LoadScene(0);
     }
 }
