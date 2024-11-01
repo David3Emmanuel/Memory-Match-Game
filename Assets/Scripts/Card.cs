@@ -50,4 +50,5 @@ public enum CardType
     Green,
     Blue,
     Purple,
+    Crotchet,
 }
